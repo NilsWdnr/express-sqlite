@@ -4,20 +4,20 @@ const sqlite = require('sqlite3');
 
 // initialize sqlite database
 const connectDatabase = () => {
-    if (fs.existsSync('./sql.db')) {
-        return new sqlite.Database('./sql.db', sqlite.OPEN_READWRITE, (error) => {
+    if (fs.existsSync('./database/sql.db')) {
+        return new sqlite.Database('./database/sql.db', sqlite.OPEN_READWRITE, (error) => {
             if (error) {
                 console.log('Error: ' + error);
-                exit(1);
+                process.exit(1);
             }
         
             console.log('Database connected');
         })     
     } else {
-        const newDb = new sqlite.Database('./sql.db', (error) => {
+        const newDb = new sqlite.Database('./database/sql.db', (error) => {
             if (error) {
                 console.log('Error: ' + error);
-                exit(1);
+                process.exit(1);
             }
             createTables(newDb);
         })
@@ -58,7 +58,7 @@ app.get('/posts', (req,res) => {
     db.all(`select * from posts`,(error,rows)=>{
         if(error){
             console.log('Error: ' + error);
-            exit(1);
+            process.exit(1);
         }
         res.json(rows);
     })
